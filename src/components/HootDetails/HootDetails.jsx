@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import * as hootService from '../../services/hootService';
 import CommentForm from '../CommentForm/CommentForm';
 import { AuthedUserContext } from '../../App';
+import { Link } from 'react-router-dom';
 
 const HootDetails = (props) => {
     const { hootId } = useParams();
@@ -39,7 +40,8 @@ const HootDetails = (props) => {
                 </p>
                 {hoot.author._id === user._id && ( 
                     <>
-                       <button onClick={() => props.handleDeleteHoot(hootId)}>Delete</button>
+                        <Link to={`/hoots/${hootId}/edit`}>Edit</Link>
+                        <button onClick={() => props.handleDeleteHoot(hootId)}>Delete</button>
                     </>
                 )}
             </header>
