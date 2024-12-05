@@ -2,6 +2,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as hootService from '../../services/hootService';
+import CommentForm from '../CommentForm/CommentForm';
 
 const HootDetails = (props) => {
     const { hootId } = useParams();
@@ -17,10 +18,15 @@ const HootDetails = (props) => {
         fetchHoot();
       }, [hootId]);
 
-      //Loading screen
-      if (!hoot) return <main>Loading...</main>;
+      const handleAddComment = async (commentFormData) => {
+        const newComment = await hootService.createComment(hootId, commentFormData);
+        setHoot({ ...hoot, comments: [...hoot.comments, newComment] });
+      };
+  
+    //Loading screen
+    if (!hoot) return <main>Loading...</main>;
 
-      return (
+    return (
         <main>
             <header>
                 <p>{hoot.category.toUpperCase()}</p>
@@ -47,6 +53,7 @@ const HootDetails = (props) => {
                         <p>{comment.text}</p>
                     </article>
                 ))}
+                <CommentForm handleAddComment={handleAddComment}/>
             </section>
         </main>
       );
